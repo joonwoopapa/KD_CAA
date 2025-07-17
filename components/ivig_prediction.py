@@ -32,7 +32,7 @@ def show(model, explainer):
         user_input["ANC_before"] = st.number_input("Absolute Neutrophil Count (10⁹/L)", value=None, placeholder="0.00", format="%.2f")
         user_input["Ca_before"] = st.number_input("Calcium (mg/dL)", value=None, placeholder="0.00", format="%.2f")
         user_input["AST_before"] = st.number_input("Aspartate Aminotransferase (IU/L)", value=None, placeholder="0.00", format="%.2f")
-        user_input["PCT_before"] = st.number_input("Procalcitonin (ng/mL)", value=None, placeholder="0.00", format="%.2f")
+        user_input["PCT_before"] = st.number_input("Plateletcrit (%)", value=None, placeholder="0.00", format="%.2f")
         user_input["CO2_before"] = st.number_input("Carbon Dioxide (mEq/L)", value=None, placeholder="0.00", format="%.2f")
         user_input["MPV_before"] = st.number_input("Mean Platelet Volume (fL)", value=None, placeholder="0.00", format="%.2f")
     
@@ -68,6 +68,24 @@ def show(model, explainer):
         "TB_before", "Ca_before", "AST_before", "PCT_before", "initial_echo_LAD_Z", 
         "ANC_before", "CO2_before", "MPV_before"
     ]
+    
+    # Feature names mapping for SHAP display
+    feature_names_map = {
+        "PLT_before": "Platelet Count (10³/ml)",
+        "Lympho_before": "Lymphocyte (%)",
+        "Seg_before": "Neutrophil (%)",
+        "Chol_before": "Cholesterol (mg/dL)",
+        "CRP_before": "C-Reactive Protein (mg/dL)",
+        "P_before": "Phosphorus (mg/dL)",
+        "TB_before": "Total Bilirubin (mg/dL)",
+        "Ca_before": "Calcium (mg/dL)",
+        "AST_before": "Aspartate Aminotransferase (IU/L)",
+        "PCT_before": "Plateletcrit (%)",
+        "initial_echo_LAD_Z": "LAD Z Score",
+        "ANC_before": "Absolute Neutrophil Count (10⁹/L)",
+        "CO2_before": "Carbon Dioxide (mEq/L)",
+        "MPV_before": "Mean Platelet Volume (fL)"
+    }
     
     if st.button("Predict IVIG Resistance", type="primary"):
         # Validate all fields are filled
@@ -106,6 +124,14 @@ def show(model, explainer):
                 try:
                     shap_values = explainer(X_input)
                     
+                    # Update feature names for better display
+                    if hasattr(shap_values, 'feature_names') and shap_values.feature_names is not None:
+                        enhanced_names = []
+                        for i, name in enumerate(shap_values.feature_names):
+                            readable_name = feature_names_map.get(name, name)
+                            enhanced_names.append(readable_name)
+                        shap_values.feature_names = enhanced_names
+                    
                     st.write("---")
                     st.subheader("Feature Importance Analysis")
                     
@@ -113,21 +139,25 @@ def show(model, explainer):
                     
                     with col1:
                         st.write("**Waterfall Plot**")
-                        fig2, ax2 = plt.subplots(figsize=(10, 6))
+                        fig2, ax2 = plt.subplots(figsize=(12, 8))
+                        plt.rcParams.update({'font.size': 10})
                         if len(shap_values[0].shape) > 1:
-                            shap.plots.waterfall(shap_values[0, :, 1], show=False)
+                            shap.plots.waterfall(shap_values[0, :, 1], max_display=14, show=False)
                         else:
-                            shap.plots.waterfall(shap_values[0], show=False)
+                            shap.plots.waterfall(shap_values[0], max_display=14, show=False)
+                        plt.tight_layout()
                         st.pyplot(fig2)
                         plt.close(fig2)
                     
                     with col2:
                         st.write("**Feature Importance (Bar Chart)**")
-                        fig4, ax4 = plt.subplots(figsize=(10, 6))
+                        fig4, ax4 = plt.subplots(figsize=(12, 8))
+                        plt.rcParams.update({'font.size': 10})
                         if len(shap_values[0].shape) > 1:
-                            shap.plots.bar(shap_values[0, :, 1], show=False)
+                            shap.plots.bar(shap_values[0, :, 1], max_display=14, show=False)
                         else:
-                            shap.plots.bar(shap_values[0], show=False)
+                            shap.plots.bar(shap_values[0], max_display=14, show=False)
+                        plt.tight_layout()
                         st.pyplot(fig4)
                         plt.close(fig4)
                         

@@ -58,6 +58,25 @@ def show(model, explainer):
         "TB_before", "CO2_before", "K_before", "Glu_before", "ALP_before"
     ]
     
+    # Feature names mapping for SHAP display
+    feature_names_map = {
+        "initial_echo_LAD_Z": "Left Anterior Descending Z-score",
+        "initial_echo_LMCA_Z": "Left Main Coronary Artery Z-score",
+        "initial_echo_RCA_Z": "Right Coronary Artery Z-score",
+        "initial_echo_LCx_Z": "Left Circumflex Z-score",
+        "fever_duration": "Fever Duration (days)",
+        "Sex": "Sex",
+        "ALT_before": "Alanine Aminotransferase (IU/L)",
+        "HCT_before": "Hematocrit (%)",
+        "P_before": "Phosphorus (mg/dL)",
+        "CRP_before": "C-Reactive Protein (mg/dL)",
+        "TB_before": "Total Bilirubin (mg/dL)",
+        "CO2_before": "Carbon Dioxide (mEq/L)",
+        "K_before": "Potassium (mEq/L)",
+        "Glu_before": "Glucose (mg/dL)",
+        "ALP_before": "Alkaline Phosphatase (IU/L)"
+    }
+    
     if st.button("Predict Coronary Aneurysm Risk", type="primary"):
         # Validate all fields are filled
         missing_fields = []
@@ -93,7 +112,24 @@ def show(model, explainer):
             
             if explainer is not None:
                 try:
+                    # Create a copy for SHAP display with readable Sex values
+                    X_display = X_input.copy()
+                    if 'Sex' in X_display.columns:
+                        X_display['Sex'] = X_display['Sex'].map({0: 'Female', 1: 'Male'})
+                    
                     shap_values = explainer(X_input)
+                    
+                    # Update feature names for better display
+                    if hasattr(shap_values, 'feature_names') and shap_values.feature_names is not None:
+                        enhanced_names = []
+                        for i, name in enumerate(shap_values.feature_names):
+                            readable_name = feature_names_map.get(name, name)
+                            enhanced_names.append(readable_name)
+                        shap_values.feature_names = enhanced_names
+                    
+                    # Update data values for display (Sex variable handling)
+                    if hasattr(shap_values, 'data'):
+                        shap_values.data = X_display.values
                     
                     st.write("---")
                     st.subheader("Feature Importance Analysis")
@@ -102,15 +138,19 @@ def show(model, explainer):
                     
                     with col1:
                         st.write("**Waterfall Plot**")
-                        fig1, ax1 = plt.subplots(figsize=(10, 6))
-                        shap.plots.waterfall(shap_values[0], show=False)
+                        fig1, ax1 = plt.subplots(figsize=(12, 8))
+                        plt.rcParams.update({'font.size': 10})
+                        shap.plots.waterfall(shap_values[0], max_display=15, show=False)
+                        plt.tight_layout()
                         st.pyplot(fig1)
                         plt.close(fig1)
                     
                     with col2:
                         st.write("**Feature Importance (Bar Chart)**")
-                        fig3, ax3 = plt.subplots(figsize=(10, 6))
-                        shap.plots.bar(shap_values[0], show=False)
+                        fig3, ax3 = plt.subplots(figsize=(12, 8))
+                        plt.rcParams.update({'font.size': 10})
+                        shap.plots.bar(shap_values[0], max_display=15, show=False)
+                        plt.tight_layout()
                         st.pyplot(fig3)
                         plt.close(fig3)
                         
