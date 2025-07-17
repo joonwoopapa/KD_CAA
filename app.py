@@ -234,7 +234,7 @@ def ivig_resistance_page(model, explainer):
                     대부분의 변수는 혈액검사 결과이며, LAD z-score는 심초음파 검사 결과입니다.
                 </p>
             </div>
-        """)
+        """, unsafe_allow_html=True)
     
     # IVIG 모델이 기대하는 feature 순서로 재정렬
     ivig_feature_order = [
