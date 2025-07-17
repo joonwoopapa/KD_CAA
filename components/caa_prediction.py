@@ -17,6 +17,11 @@ def show(model, explainer):
     
     with col1:
         st.markdown("**Laboratory Parameters**")
+        st.markdown("""
+        <div style='font-size: 0.8rem; color: #64748b; margin-bottom: 1rem; line-height: 1.3;'>
+        Results within 3 days prior to the 1st IVIG administration
+        </div>
+        """, unsafe_allow_html=True)
         user_input["CRP_before"] = st.number_input("C-Reactive Protein (mg/dL)", value=None, placeholder="0.00", format="%.2f")
         user_input["P_before"] = st.number_input("Phosphorus (mg/dL)", value=None, placeholder="0.00", format="%.2f")
         user_input["TB_before"] = st.number_input("Total Bilirubin (mg/dL)", value=None, placeholder="0.00", format="%.2f")

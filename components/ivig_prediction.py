@@ -17,6 +17,11 @@ def show(model, explainer):
     
     with col1:
         st.markdown("**Laboratory Parameters**")
+        st.markdown("""
+        <div style='font-size: 0.8rem; color: #64748b; margin-bottom: 1rem; line-height: 1.3;'>
+        Results within 3 days prior to the 1st IVIG administration
+        </div>
+        """, unsafe_allow_html=True)
         user_input["Lympho_before"] = st.number_input("Lymphocyte (%)", value=None, placeholder="0.00", format="%.2f")
         user_input["Seg_before"] = st.number_input("Neutrophil (%)", value=None, placeholder="0.00", format="%.2f")
         user_input["PLT_before"] = st.number_input("Platelet Count (10³/μL)", value=None, placeholder="0.00", format="%.2f")
