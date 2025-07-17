@@ -1,7 +1,7 @@
 import streamlit as st
 
 from utils.model_loader import load_models
-from components import home, caa_prediction, ivig_prediction
+from pages import home, caa_prediction, ivig_prediction
 
 st.set_page_config(
     page_title="Kawasaki Disease Prediction System",
