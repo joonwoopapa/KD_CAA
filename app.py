@@ -70,34 +70,49 @@ def coronary_aneurysm_page(model, explainer):
     # Blood Test 섹션
     with col1:
         st.markdown("**🩸 Blood Test**")
-        user_input["CRP_before"] = st.number_input("CRP (mg/dL)", value=0.0, format="%.2f")
-        user_input["P_before"] = st.number_input("Phosphorus (mg/dL)", value=0.0, format="%.2f")
-        user_input["TB_before"] = st.number_input("Total bilirubin (mg/dL)", value=0.0, format="%.2f")
-        user_input["ALT_before"] = st.number_input("ALT (U/L)", value=0.0, format="%.2f")
-        user_input["HCT_before"] = st.number_input("Hematocrit (%)", value=0.0, format="%.2f")
-        user_input["CO2_before"] = st.number_input("CO2 (mEq/L)", value=0.0, format="%.2f")
-        user_input["K_before"] = st.number_input("Potassium (mEq/L)", value=0.0, format="%.2f")
-        user_input["Glu_before"] = st.number_input("Glucose (mg/dL)", value=0.0, format="%.2f")
-        user_input["ALP_before"] = st.number_input("ALP (U/L)", value=0.0, format="%.2f")
+        user_input["CRP_before"] = st.number_input("CRP", value=0.0, format="%.2f", help="C-reactive protein (mg/dL)")
+        user_input["P_before"] = st.number_input("Phosphorus", value=0.0, format="%.2f", help="mg/dL")
+        user_input["TB_before"] = st.number_input("Total bilirubin", value=0.0, format="%.2f", help="mg/dL")
+        user_input["ALT_before"] = st.number_input("ALT", value=0.0, format="%.2f", help="Alanine aminotransferase (IU/L)")
+        user_input["HCT_before"] = st.number_input("Hematocrit", value=0.0, format="%.2f", help="Percentage (%)")
+        user_input["CO2_before"] = st.number_input("CO2", value=0.0, format="%.2f", help="Carbon dioxide (mEq/L)")
+        user_input["K_before"] = st.number_input("Potassium", value=0.0, format="%.2f", help="mEq/L")
+        user_input["Glu_before"] = st.number_input("Glucose", value=0.0, format="%.2f", help="mg/dL")
+        user_input["ALP_before"] = st.number_input("ALP", value=0.0, format="%.2f", help="Alkaline phosphatase (IU/L)")
     
     # Echocardiography 섹션
     with col2:
         st.markdown("**🫀 Echocardiography**")
-        user_input["initial_echo_RCA_Z"] = st.number_input("RCA z score", value=0.0, format="%.2f")
-        user_input["initial_echo_LMCA_Z"] = st.number_input("LMCA z score", value=0.0, format="%.2f")
-        user_input["initial_echo_LAD_Z"] = st.number_input("LAD z score", value=0.0, format="%.2f")
-        user_input["initial_echo_LCx_Z"] = st.number_input("LCx z score", value=0.0, format="%.2f")
+        st.markdown("""
+        <div style='font-size: 0.8rem; color: #666; margin-bottom: 1rem; line-height: 1.3;'>
+        1) Initial echocardiography result<br/>
+        2) Z score by Dallaire and Dahdah
+        </div>
+        """, unsafe_allow_html=True)
+        user_input["initial_echo_RCA_Z"] = st.number_input("RCA z score", value=0.0, format="%.2f", help="Right coronary artery Z-score")
+        user_input["initial_echo_LMCA_Z"] = st.number_input("LMCA z score", value=0.0, format="%.2f", help="Left main coronary artery Z-score")
+        user_input["initial_echo_LAD_Z"] = st.number_input("LAD z score", value=0.0, format="%.2f", help="Left anterior descending artery Z-score")
+        user_input["initial_echo_LCx_Z"] = st.number_input("LCx z score", value=0.0, format="%.2f", help="Left circumflex artery Z-score")
     
     # Clinical Symptom 섹션
     with col3:
         st.markdown("**🩺 Clinical Symptom & Demographics**")
-        user_input["fever_duration"] = st.number_input("Fever duration (days)", value=0.0, format="%.1f")
+        user_input["fever_duration"] = st.number_input("Fever duration", value=0.0, format="%.1f", help="Duration in days")
         user_input["Sex"] = st.selectbox(
             "Sex", [0, 1], 
-            format_func=lambda x: "남자 (Male)" if x == 1 else "여자 (Female)"
+            format_func=lambda x: "남자 (Male)" if x == 1 else "여자 (Female)",
+            help="0: Female, 1: Male"
         )
     
+    # 모델이 기대하는 feature 순서로 재정렬
+    feature_order = [
+        "initial_echo_LAD_Z", "initial_echo_LMCA_Z", "initial_echo_RCA_Z", "initial_echo_LCx_Z",
+        "fever_duration", "Sex", "ALT_before", "HCT_before", "P_before", "CRP_before",
+        "TB_before", "CO2_before", "K_before", "Glu_before", "ALP_before"
+    ]
+    
     X_input = pd.DataFrame([user_input])
+    X_input = X_input[feature_order]  # 모델 훈련 시 순서로 재정렬
     
     if st.button("🔍 Coronary Aneurysm 예측", type="primary"):
         if model is not None:
@@ -175,24 +190,30 @@ def ivig_resistance_page(model, explainer):
     # Blood Test 섹션
     with col1:
         st.markdown("**🩸 Blood Test**")
-        user_input["Lympho_before"] = st.number_input("Lymphocyte (%)", value=0.0, format="%.2f")
-        user_input["Seg_before"] = st.number_input("Neutrophil (%)", value=0.0, format="%.2f")
-        user_input["PLT_before"] = st.number_input("Platelet count (10³/ml)", value=0.0, format="%.2f")
-        user_input["Chol_before"] = st.number_input("Cholesterol (mg/dL)", value=0.0, format="%.2f")
-        user_input["CRP_before"] = st.number_input("CRP (mg/dL)", value=0.0, format="%.2f")
-        user_input["TB_before"] = st.number_input("Total bilirubin (mg/dL)", value=0.0, format="%.2f")
-        user_input["P_before"] = st.number_input("Phosphorus (mg/dL)", value=0.0, format="%.2f")
-        user_input["ANC_before"] = st.number_input("Absolute Neutrophil count (10⁹/L)", value=0.0, format="%.2f")
-        user_input["Ca_before"] = st.number_input("Calcium (mg/dL)", value=0.0, format="%.2f")
-        user_input["AST_before"] = st.number_input("AST (U/L)", value=0.0, format="%.2f")
-        user_input["PCT_before"] = st.number_input("Procalcitonin (ng/mL)", value=0.0, format="%.2f")
-        user_input["CO2_before"] = st.number_input("CO2 (mEq/L)", value=0.0, format="%.2f")
-        user_input["MPV_before"] = st.number_input("Mean Platelet Volume (fL)", value=0.0, format="%.2f")
+        user_input["Lympho_before"] = st.number_input("Lymphocyte", value=0.0, format="%.2f", help="Percentage (%)")
+        user_input["Seg_before"] = st.number_input("Neutrophil", value=0.0, format="%.2f", help="Percentage (%)")
+        user_input["PLT_before"] = st.number_input("Platelet count", value=0.0, format="%.2f", help="10³/ml")
+        user_input["Chol_before"] = st.number_input("Cholesterol", value=0.0, format="%.2f", help="mg/dL")
+        user_input["CRP_before"] = st.number_input("CRP", value=0.0, format="%.2f", help="C-reactive protein (mg/dL)")
+        user_input["TB_before"] = st.number_input("Total bilirubin", value=0.0, format="%.2f", help="mg/dL")
+        user_input["P_before"] = st.number_input("Phosphorus", value=0.0, format="%.2f", help="mg/dL")
+        user_input["ANC_before"] = st.number_input("Absolute Neutrophil count", value=0.0, format="%.2f", help="10⁹/L")
+        user_input["Ca_before"] = st.number_input("Calcium", value=0.0, format="%.2f", help="mg/dL")
+        user_input["AST_before"] = st.number_input("AST", value=0.0, format="%.2f", help="Aspartate aminotransferase (IU/L)")
+        user_input["PCT_before"] = st.number_input("Procalcitonin", value=0.0, format="%.2f", help="ng/mL")
+        user_input["CO2_before"] = st.number_input("CO2", value=0.0, format="%.2f", help="Carbon dioxide (mEq/L)")
+        user_input["MPV_before"] = st.number_input("Mean Platelet Volume", value=0.0, format="%.2f", help="fL")
     
     # Echocardiography 섹션  
     with col2:
         st.markdown("**🫀 Echocardiography**")
-        user_input["initial_echo_LAD_Z"] = st.number_input("LAD z score", value=0.0, format="%.2f")
+        st.markdown("""
+        <div style='font-size: 0.8rem; color: #666; margin-bottom: 1rem; line-height: 1.3;'>
+        1) Initial echocardiography result<br/>
+        2) Z score by Dallaire and Dahdah
+        </div>
+        """, unsafe_allow_html=True)
+        user_input["initial_echo_LAD_Z"] = st.number_input("LAD z score", value=0.0, format="%.2f", help="Left anterior descending artery Z-score")
     
     # 추가 정보 섹션
     with col3:
@@ -213,7 +234,15 @@ def ivig_resistance_page(model, explainer):
             </div>
         """)
     
+    # IVIG 모델이 기대하는 feature 순서로 재정렬
+    ivig_feature_order = [
+        "PLT_before", "Lympho_before", "Seg_before", "Chol_before", "CRP_before", "P_before", 
+        "TB_before", "Ca_before", "AST_before", "PCT_before", "initial_echo_LAD_Z", 
+        "ANC_before", "CO2_before", "MPV_before"
+    ]
+    
     X_input = pd.DataFrame([user_input])
+    X_input = X_input[ivig_feature_order]  # 모델 훈련 시 순서로 재정렬
     
     if st.button("🔍 IVIG Resistance 예측", type="primary"):
         if model is not None:
