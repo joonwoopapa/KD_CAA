@@ -147,8 +147,10 @@ def coronary_aneurysm_page(model, explainer):
                     
                     with col1:
                         st.write("**Waterfall Plot**")
-                        fig1 = shap.plots.waterfall(shap_values[0], show=False)
+                        fig1, ax1 = plt.subplots(figsize=(10, 6))
+                        shap.plots.waterfall(shap_values[0], show=False)
                         st.pyplot(fig1)
+                        plt.close(fig1)
                     
                     with col2:
                         st.write("**Force Plot**")
@@ -277,8 +279,10 @@ def ivig_resistance_page(model, explainer):
                     
                     with col1:
                         st.write("**Waterfall Plot**")
-                        fig1 = shap.plots.waterfall(shap_values[0], show=False)
-                        st.pyplot(fig1)
+                        fig2, ax2 = plt.subplots(figsize=(10, 6))
+                        shap.plots.waterfall(shap_values[0], show=False)
+                        st.pyplot(fig2)
+                        plt.close(fig2)
                     
                     with col2:
                         st.write("**Force Plot**")
