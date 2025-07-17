@@ -154,9 +154,18 @@ def coronary_aneurysm_page(model, explainer):
                     
                     with col2:
                         st.write("**Force Plot**")
-                        force_plot_html = shap.plots.force(shap_values[0], matplotlib=False).html()
-                        st.components.v1.html(shap.getjs(), height=0)
-                        st.components.v1.html(force_plot_html, height=300)
+                        try:
+                            # Force plot을 matplotlib 형태로 생성하여 JavaScript 의존성 제거
+                            fig3, ax3 = plt.subplots(figsize=(12, 3))
+                            shap.plots.force(shap_values[0], matplotlib=True, show=False)
+                            st.pyplot(fig3)
+                            plt.close(fig3)
+                        except Exception as force_error:
+                            st.warning("Force plot을 생성할 수 없습니다. Bar plot으로 대체합니다.")
+                            fig3, ax3 = plt.subplots(figsize=(10, 6))
+                            shap.plots.bar(shap_values[0], show=False)
+                            st.pyplot(fig3)
+                            plt.close(fig3)
                         
                 except Exception as e:
                     st.error(f"SHAP 분석 중 오류: {str(e)}")
@@ -280,15 +289,34 @@ def ivig_resistance_page(model, explainer):
                     with col1:
                         st.write("**Waterfall Plot**")
                         fig2, ax2 = plt.subplots(figsize=(10, 6))
-                        shap.plots.waterfall(shap_values[0], show=False)
+                        # IVIG 저항성(positive class)에 대한 SHAP 값 사용
+                        if len(shap_values[0].shape) > 1:
+                            shap.plots.waterfall(shap_values[0, :, 1], show=False)  # multi-output model
+                        else:
+                            shap.plots.waterfall(shap_values[0], show=False)  # single output model
                         st.pyplot(fig2)
                         plt.close(fig2)
                     
                     with col2:
                         st.write("**Force Plot**")
-                        force_plot_html = shap.plots.force(shap_values[0], matplotlib=False).html()
-                        st.components.v1.html(shap.getjs(), height=0)
-                        st.components.v1.html(force_plot_html, height=300)
+                        try:
+                            # Force plot을 matplotlib 형태로 생성하여 JavaScript 의존성 제거
+                            fig4, ax4 = plt.subplots(figsize=(12, 3))
+                            if len(shap_values[0].shape) > 1:
+                                shap.plots.force(shap_values[0, :, 1], matplotlib=True, show=False)
+                            else:
+                                shap.plots.force(shap_values[0], matplotlib=True, show=False)
+                            st.pyplot(fig4)
+                            plt.close(fig4)
+                        except Exception as force_error:
+                            st.warning("Force plot을 생성할 수 없습니다. Bar plot으로 대체합니다.")
+                            fig4, ax4 = plt.subplots(figsize=(10, 6))
+                            if len(shap_values[0].shape) > 1:
+                                shap.plots.bar(shap_values[0, :, 1], show=False)
+                            else:
+                                shap.plots.bar(shap_values[0], show=False)
+                            st.pyplot(fig4)
+                            plt.close(fig4)
                         
                 except Exception as e:
                     st.error(f"SHAP 분석 중 오류: {str(e)}")
