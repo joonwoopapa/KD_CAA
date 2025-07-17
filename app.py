@@ -46,28 +46,56 @@ def coronary_aneurysm_page(model, explainer):
     st.title("🫀 Coronary Aneurysm Prediction")
     st.write("*XGBoost 모델을 사용한 관상동맥류 발생 예측*")
     
-    features = [
-        "initial_echo_LAD_Z", "initial_echo_LMCA_Z", "initial_echo_RCA_Z", "initial_echo_LCx_Z",
-        "fever_duration", "Sex", "ALT_before", "HCT_before", "P_before", "CRP_before",
-        "TB_before", "CO2_before", "K_before", "Glu_before", "ALP_before"
-    ]
+    # 필수 필드 안내
+    st.markdown("""
+        <div style='
+            background-color: #f8fafc;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #3182ce;
+        '>
+            <p style='margin: 0; color: #4a5568; font-size: 0.9rem;'>
+                <span style='color: #3182ce;'>ℹ️</span>
+                <strong>All fields are required.</strong> 예측을 위해 모든 측정값을 입력해주세요.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
     
-    st.write("### 🔬 15개 변수 입력")
-    
-    # 3개 열로 나누어 입력 필드 배치
+    # 3개 섹션으로 나누어 입력 필드 배치
     col1, col2, col3 = st.columns(3)
     
     user_input = {}
-    for i, feat in enumerate(features):
-        if feat == "Sex":
-            with [col1, col2, col3][i % 3]:
-                user_input[feat] = st.selectbox(
-                    feat, [0, 1], 
-                    format_func=lambda x: "남자(1)" if x == 1 else "여자(0)"
-                )
-        else:
-            with [col1, col2, col3][i % 3]:
-                user_input[feat] = st.number_input(feat, value=0.0)
+    
+    # Blood Test 섹션
+    with col1:
+        st.markdown("**🩸 Blood Test**")
+        user_input["CRP_before"] = st.number_input("CRP (mg/dL)", value=0.0, format="%.2f")
+        user_input["P_before"] = st.number_input("Phosphorus (mg/dL)", value=0.0, format="%.2f")
+        user_input["TB_before"] = st.number_input("Total bilirubin (mg/dL)", value=0.0, format="%.2f")
+        user_input["ALT_before"] = st.number_input("ALT (U/L)", value=0.0, format="%.2f")
+        user_input["HCT_before"] = st.number_input("Hematocrit (%)", value=0.0, format="%.2f")
+        user_input["CO2_before"] = st.number_input("CO2 (mEq/L)", value=0.0, format="%.2f")
+        user_input["K_before"] = st.number_input("Potassium (mEq/L)", value=0.0, format="%.2f")
+        user_input["Glu_before"] = st.number_input("Glucose (mg/dL)", value=0.0, format="%.2f")
+        user_input["ALP_before"] = st.number_input("ALP (U/L)", value=0.0, format="%.2f")
+    
+    # Echocardiography 섹션
+    with col2:
+        st.markdown("**🫀 Echocardiography**")
+        user_input["initial_echo_RCA_Z"] = st.number_input("RCA z score", value=0.0, format="%.2f")
+        user_input["initial_echo_LMCA_Z"] = st.number_input("LMCA z score", value=0.0, format="%.2f")
+        user_input["initial_echo_LAD_Z"] = st.number_input("LAD z score", value=0.0, format="%.2f")
+        user_input["initial_echo_LCx_Z"] = st.number_input("LCx z score", value=0.0, format="%.2f")
+    
+    # Clinical Symptom 섹션
+    with col3:
+        st.markdown("**🩺 Clinical Symptom & Demographics**")
+        user_input["fever_duration"] = st.number_input("Fever duration (days)", value=0.0, format="%.1f")
+        user_input["Sex"] = st.selectbox(
+            "Sex", [0, 1], 
+            format_func=lambda x: "남자 (Male)" if x == 1 else "여자 (Female)"
+        )
     
     X_input = pd.DataFrame([user_input])
     
@@ -123,21 +151,67 @@ def ivig_resistance_page(model, explainer):
     st.title("💉 IVIG Resistance Prediction")
     st.write("*RandomForest 모델을 사용한 IVIG 저항성 예측*")
     
-    features = [
-        "PLT_before", "Lympho_before", "Seg_before", "Chol_before", "CRP_before", "P_before", 
-        "TB_before", "Ca_before", "AST_before", "PCT_before", "initial_echo_LAD_Z", 
-        "ANC_before", "CO2_before", "MPV_before"
-    ]
+    # 필수 필드 안내
+    st.markdown("""
+        <div style='
+            background-color: #f8fafc;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #3182ce;
+        '>
+            <p style='margin: 0; color: #4a5568; font-size: 0.9rem;'>
+                <span style='color: #3182ce;'>ℹ️</span>
+                <strong>All fields are required.</strong> 예측을 위해 모든 측정값을 입력해주세요.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
     
-    st.write("### 🔬 14개 변수 입력")
-    
-    # 3개 열로 나누어 입력 필드 배치
+    # 3개 섹션으로 나누어 입력 필드 배치
     col1, col2, col3 = st.columns(3)
     
     user_input = {}
-    for i, feat in enumerate(features):
-        with [col1, col2, col3][i % 3]:
-            user_input[feat] = st.number_input(feat, value=0.0)
+    
+    # Blood Test 섹션
+    with col1:
+        st.markdown("**🩸 Blood Test**")
+        user_input["Lympho_before"] = st.number_input("Lymphocyte (%)", value=0.0, format="%.2f")
+        user_input["Seg_before"] = st.number_input("Neutrophil (%)", value=0.0, format="%.2f")
+        user_input["PLT_before"] = st.number_input("Platelet count (10³/ml)", value=0.0, format="%.2f")
+        user_input["Chol_before"] = st.number_input("Cholesterol (mg/dL)", value=0.0, format="%.2f")
+        user_input["CRP_before"] = st.number_input("CRP (mg/dL)", value=0.0, format="%.2f")
+        user_input["TB_before"] = st.number_input("Total bilirubin (mg/dL)", value=0.0, format="%.2f")
+        user_input["P_before"] = st.number_input("Phosphorus (mg/dL)", value=0.0, format="%.2f")
+        user_input["ANC_before"] = st.number_input("Absolute Neutrophil count (10⁹/L)", value=0.0, format="%.2f")
+        user_input["Ca_before"] = st.number_input("Calcium (mg/dL)", value=0.0, format="%.2f")
+        user_input["AST_before"] = st.number_input("AST (U/L)", value=0.0, format="%.2f")
+        user_input["PCT_before"] = st.number_input("Procalcitonin (ng/mL)", value=0.0, format="%.2f")
+        user_input["CO2_before"] = st.number_input("CO2 (mEq/L)", value=0.0, format="%.2f")
+        user_input["MPV_before"] = st.number_input("Mean Platelet Volume (fL)", value=0.0, format="%.2f")
+    
+    # Echocardiography 섹션  
+    with col2:
+        st.markdown("**🫀 Echocardiography**")
+        user_input["initial_echo_LAD_Z"] = st.number_input("LAD z score", value=0.0, format="%.2f")
+    
+    # 추가 정보 섹션
+    with col3:
+        st.markdown("**📊 Additional Information**")
+        st.markdown("""
+            <div style='
+                background-color: #f0f9ff;
+                padding: 1rem;
+                border-radius: 6px;
+                border-left: 3px solid #0ea5e9;
+                margin-top: 1rem;
+            '>
+                <p style='margin: 0; color: #0c4a6e; font-size: 0.85rem; line-height: 1.4;'>
+                    <strong>📝 Note:</strong><br/>
+                    이 모델은 14개의 임상 변수를 사용하여 IVIG 저항성을 예측합니다. 
+                    대부분의 변수는 혈액검사 결과이며, LAD z-score는 심초음파 검사 결과입니다.
+                </p>
+            </div>
+        """)
     
     X_input = pd.DataFrame([user_input])
     

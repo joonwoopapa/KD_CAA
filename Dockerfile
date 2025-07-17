@@ -20,9 +20,6 @@ COPY . .
 # Streamlit 포트 노출
 EXPOSE 8501
 
-# 헬스체크 추가
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
-
 # Streamlit 설정
 ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0
 ENV STREAMLIT_SERVER_PORT=8501
