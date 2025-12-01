@@ -12,7 +12,7 @@ def show():
     
     with col1:
         st.subheader("Coronary Aneurysm Prediction")
-        st.write("Predicts the probability of coronary aneurysm development using **CAT Boost model**.")
+        st.write("Predicts the probability of coronary aneurysm development using **Cat Boost model**.")
         st.write("• **Input:** 16 clinical variables")
         st.write("• **Output:** Coronary aneurysm probability")
         st.write("• **Analysis:** Explainable AI through SHAP")
