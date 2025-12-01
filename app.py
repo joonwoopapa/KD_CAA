@@ -1,5 +1,6 @@
 import streamlit as st
 import pickle
+import os
 from components import home, caa_prediction, ivig_prediction
 
 st.set_page_config(
@@ -14,17 +15,19 @@ def load_models():
     explainers = {}
     
     try:
-        # CAA 모델
-        with open('models/agb_model.pkl', 'rb') as f:
+        # CAA 모델 (⭐ 파일명 수정)
+        with open('models/caa_model.pkl', 'rb') as f:
             models['caa'] = pickle.load(f)
-        with open('models/agb_shap.pkl', 'rb') as f:
+        with open('models/caa_explainer.pkl', 'rb') as f:
             explainers['caa'] = pickle.load(f)
         
-        # IVIG 모델
+        # IVIG 모델 (⭐ 파일명 수정)
         with open('models/ivig_model.pkl', 'rb') as f:
             models['ivig'] = pickle.load(f)
-        with open('models/ivig_shap.pkl', 'rb') as f:
+        with open('models/ivig_explainer.pkl', 'rb') as f:
             explainers['ivig'] = pickle.load(f)
+        
+        st.sidebar.success("✅ 모든 모델 로드 완료!")
             
     except Exception as e:
         st.error(f"❌ 모델 로딩 실패: {str(e)}")
