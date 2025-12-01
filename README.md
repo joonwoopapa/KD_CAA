@@ -140,21 +140,21 @@ streamlit run app.py
 - 각 모델의 특징과 용도 확인
 
 ### 2. 관상동맥류 예측
-**입력 변수 (15개)**:
+**입력 변수 (16개)**:
 - Echo Z-scores: LAD, LMCA, RCA, LCx
 - 임상 정보: 발열기간, 성별
-- 혈액검사: ALT, HCT, 인, CRP, 총빌리루빈, CO2, 칼륨, 포도당, ALP
+- 혈액검사: ALT, AST, Hb, HCT, 인, CRP, ESR, 총빌리루빈, CO2, 알부민
 
 **출력**:
 - 예측 확률과 위험도 평가
 - SHAP 분석을 통한 각 변수의 기여도 시각화
 
 ### 3. IVIG 저항성 예측
-**입력 변수 (14개)**:
+**입력 변수 (13개)**:
 - 혈액검사: 혈소판수치, 림프구, 호중구, 콜레스테롤
 - 염증지표: CRP, 인, 총빌리루빈, 칼슘
 - 간기능: AST, Plateletcrit(%)
-- 기타: Echo LAD Z-score, ANC, CO2, MPV
+- 기타: Echo LAD Z-score, ANC, CO2
 
 **출력**:
 - IVIG 치료 반응성 예측 결과
