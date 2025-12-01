@@ -4,7 +4,7 @@
 
 ### 관상동맥류 예측 모델 (CAA)
 
-**총 15개 변수**
+**총 16개 변수**
 
 | 변수명 | 설명 | 단위 | 범위 |
 |--------|------|------|------|
@@ -14,19 +14,21 @@
 | initial_echo_LCx_Z | 좌회선지 Z-score | - | -5.0 ~ 15.0 |
 | fever_duration | 발열 지속 기간 | 일 | 1 ~ 30 |
 | Sex | 성별 | - | 0(여), 1(남) |
-| ALT_before | 알라닌 아미노전이효소 | U/L | 5 ~ 500 |
+| ALT_before | 알라닌 아미노전이효소 | IU/L | 5 ~ 500 |
+| AST_before | AST | IU/L | 5 ~ 500 |
 | HCT_before | 헤마토크릿 | % | 20 ~ 50 |
+| CRP_before | C-반응성 단백질 | mg/dL | 0.0 ~ 100.0 |
+| ESR_before | ESR | mm/hr | 0.0 ~ 9.0 |
+
 | P_before | 인 | mg/dL | 2.0 ~ 8.0 |
-| CRP_before | C-반응성 단백질 | mg/dL | 0.0 ~ 30.0 |
-| TB_before | 총 빌리루빈 | mg/dL | 0.1 ~ 10.0 |
-| CO2_before | 이산화탄소 | mEq/L | 10 ~ 35 |
-| K_before | 칼륨 | mEq/L | 2.5 ~ 6.0 |
-| Glu_before | 포도당 | mg/dL | 50 ~ 300 |
-| ALP_before | 알칼리성 포스파타제 | U/L | 50 ~ 500 |
+| TB_before | 총 빌리루빈 | mg/dL | 0.1 ~ 100.0 |
+| Alb_before | 알부민 | g/dL | 3.3 ~ 15.0 |
+| Hb_before | 헤모글로빈 | g/dL | 10.5 ~ 25.0 |
+| Protein_before | 총 단백질 | g/dL | 6.0 ~ 10.0 |
 
 ### IVIG 저항성 예측 모델
 
-**총 14개 변수**
+**총 13개 변수**
 
 | 변수명 | 설명 | 단위 | 범위 |
 |--------|------|------|------|
@@ -43,7 +45,6 @@
 | initial_echo_LAD_Z | 좌전하행지 Z-score | - | -5.0 ~ 15.0 |
 | ANC_before | 절대호중구수 | ×10³/μL | 1.0 ~ 20.0 |
 | CO2_before | 이산화탄소 | mEq/L | 10 ~ 35 |
-| MPV_before | 평균혈소판용적 | fL | 7.0 ~ 12.0 |
 
 ## 출력 형식
 
