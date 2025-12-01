@@ -90,7 +90,7 @@ KD_CAA/
 ## 🔧 기술 스택
 
 - **Frontend**: Streamlit (모듈화된 컴포넌트 구조)
-- **ML Models**: XGBoost, RandomForest
+- **ML Models**: CATBoost, RandomForest
 - **Explainability**: SHAP (최신 시각화 기능)
 - **Deployment**: Docker, Render.com
 - **Language**: Python 3.12
