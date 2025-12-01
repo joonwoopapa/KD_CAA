@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 def show(model, explainer):
     """Display the Coronary Aneurysm prediction page"""
     st.title("Coronary Aneurysm Prediction")
-    st.write("*Prediction of coronary aneurysm development using XGBoost model*")
+    st.write("*Prediction of coronary aneurysm development using CatBoost model*")
     
 
     
@@ -23,14 +23,15 @@ def show(model, explainer):
         </div>
         """, unsafe_allow_html=True)
         user_input["CRP_before"] = st.number_input("C-Reactive Protein (mg/dL)", value=None, placeholder="0.00", format="%.2f")
+        user_input["ESR_before"] = st.number_input("ESR (mm/hr)", value=None, placeholder="0.00", format="%.2f")
         user_input["P_before"] = st.number_input("Phosphorus (mg/dL)", value=None, placeholder="0.00", format="%.2f")
         user_input["TB_before"] = st.number_input("Total Bilirubin (mg/dL)", value=None, placeholder="0.00", format="%.2f")
         user_input["ALT_before"] = st.number_input("Alanine Aminotransferase (IU/L)", value=None, placeholder="0.00", format="%.2f")
+        user_input["AST_before"] = st.number_input("Aspartate Aminotransferase (IU/L)", value=None, placeholder="0.00", format="%.2f")
         user_input["HCT_before"] = st.number_input("Hematocrit (%)", value=None, placeholder="0.00", format="%.2f")
-        user_input["CO2_before"] = st.number_input("Carbon Dioxide (mEq/L)", value=None, placeholder="0.00", format="%.2f")
-        user_input["K_before"] = st.number_input("Potassium (mEq/L)", value=None, placeholder="0.00", format="%.2f")
-        user_input["Glu_before"] = st.number_input("Glucose (mg/dL)", value=None, placeholder="0.00", format="%.2f")
-        user_input["ALP_before"] = st.number_input("Alkaline Phosphatase (IU/L)", value=None, placeholder="0.00", format="%.2f")
+        user_input["Hb_before"] = st.number_input("Hemoglobin (g/dL)", value=None, placeholder="0.00", format="%.2f")
+        user_input["Alb_before"] = st.number_input("Albumin (g/dL)", value=None, placeholder="0.00", format="%.2f")
+        user_input["Protein_before"] = st.number_input("Protein (g/dL)", value=None, placeholder="0.00", format="%.2f")
     
     with col2:
         st.markdown("**Echocardiographic Parameters**")
@@ -54,8 +55,8 @@ def show(model, explainer):
     
     feature_order = [
         "initial_echo_LAD_Z", "initial_echo_LMCA_Z", "initial_echo_RCA_Z", "initial_echo_LCx_Z",
-        "fever_duration", "Sex", "ALT_before", "HCT_before", "P_before", "CRP_before",
-        "TB_before", "CO2_before", "K_before", "Glu_before", "ALP_before"
+        "fever_duration", "Sex", "AST_before", "ALT_before", "CRP_before", "ESR_before", "HCT_before", "Hb_before",
+        "P_before", "TB_before", "Alb_before", "Protein_before"
     ]
     
     # Feature names mapping for SHAP display
@@ -67,14 +68,15 @@ def show(model, explainer):
         "fever_duration": "Fever Duration (days)",
         "Sex": "Sex",
         "ALT_before": "Alanine Aminotransferase (IU/L)",
+        "AST_before": "Aspartate Aminotransferase (IU/L)",
+        "Hb_before" : "Hemoglobin (g/dL)",
         "HCT_before": "Hematocrit (%)",
         "P_before": "Phosphorus (mg/dL)",
         "CRP_before": "C-Reactive Protein (mg/dL)",
+        "ESR_before": "ESR (mm/hr)",
         "TB_before": "Total Bilirubin (mg/dL)",
-        "CO2_before": "Carbon Dioxide (mEq/L)",
-        "K_before": "Potassium (mEq/L)",
-        "Glu_before": "Glucose (mg/dL)",
-        "ALP_before": "Alkaline Phosphatase (IU/L)"
+        "Alb_before" : "Albumin (g/dL)",
+        "Protein_before" : "Protein (g/dL)", 
     }
     
     if st.button("Predict Coronary Aneurysm Risk", type="primary"):
