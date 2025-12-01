@@ -57,7 +57,7 @@ def show(model, explainer):
             '>
                 <p style='margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.4;'>
                     <strong>Clinical Variables:</strong><br/>
-                    This model utilizes 14 clinical variables to predict IVIG resistance. 
+                    This model utilizes 13 clinical variables to predict IVIG resistance. 
                     Most variables are laboratory parameters with one echocardiographic measurement.
                 </p>
             </div>
