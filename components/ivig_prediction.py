@@ -34,7 +34,7 @@ def show(model, explainer):
         user_input["AST_before"] = st.number_input("Aspartate Aminotransferase (IU/L)", value=None, placeholder="0.00", format="%.2f")
         user_input["PCT_before"] = st.number_input("Plateletcrit (%)", value=None, placeholder="0.00", format="%.2f")
         user_input["CO2_before"] = st.number_input("Carbon Dioxide (mEq/L)", value=None, placeholder="0.00", format="%.2f")
-        user_input["MPV_before"] = st.number_input("Mean Platelet Volume (fL)", value=None, placeholder="0.00", format="%.2f")
+
     
     with col2:
         st.markdown("**Echocardiographic Parameters**")
@@ -66,7 +66,7 @@ def show(model, explainer):
     ivig_feature_order = [
         "PLT_before", "Lympho_before", "Seg_before", "Chol_before", "CRP_before", "P_before", 
         "TB_before", "Ca_before", "AST_before", "PCT_before", "initial_echo_LAD_Z", 
-        "ANC_before", "CO2_before", "MPV_before"
+        "ANC_before", "CO2_before"
     ]
     
     # Feature names mapping for SHAP display
@@ -84,7 +84,6 @@ def show(model, explainer):
         "initial_echo_LAD_Z": "LAD Z Score",
         "ANC_before": "Absolute Neutrophil Count (10⁹/L)",
         "CO2_before": "Carbon Dioxide (mEq/L)",
-        "MPV_before": "Mean Platelet Volume (fL)"
     }
     
     if st.button("Predict IVIG Resistance", type="primary"):
