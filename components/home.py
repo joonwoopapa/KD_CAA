@@ -43,7 +43,7 @@ def show():
         • Final diagnosis and treatment decisions must be made by qualified medical personnel
         • Prediction results should be used as supplementary information only
         
-        **Technical Stack:** Streamlit, XGBoost, RandomForest, SHAP
+        **Technical Stack:** Streamlit, CATBoost, RandomForest, SHAP
         
         **Reference:** Model performance and validation metrics are available in the accompanying research documentation.
         """) 
