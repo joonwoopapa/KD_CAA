@@ -12,8 +12,8 @@ def show():
     
     with col1:
         st.subheader("Coronary Aneurysm Prediction")
-        st.write("Predicts the probability of coronary aneurysm development using **XGBoost model**.")
-        st.write("• **Input:** 15 clinical variables")
+        st.write("Predicts the probability of coronary aneurysm development using **CAT Boost model**.")
+        st.write("• **Input:** 16 clinical variables")
         st.write("• **Output:** Coronary aneurysm probability")
         st.write("• **Analysis:** Explainable AI through SHAP")
         
@@ -24,7 +24,7 @@ def show():
     with col2:
         st.subheader("IVIG Resistance Prediction")
         st.write("Predicts IVIG resistance probability using **RandomForest model**.")
-        st.write("• **Input:** 14 clinical variables")
+        st.write("• **Input:** 13 clinical variables")
         st.write("• **Output:** IVIG resistance probability")
         st.write("• **Analysis:** Explainable AI through SHAP")
         
