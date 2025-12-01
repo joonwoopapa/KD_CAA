@@ -1,6 +1,5 @@
 import streamlit as st
 import pickle
-import os
 from components import home, caa_prediction, ivig_prediction
 
 st.set_page_config(
@@ -15,20 +14,21 @@ def load_models():
     explainers = {}
     
     try:
-        # CAA 모델 (⭐ 파일명 수정)
+        # CAA 모델
         with open('models/caa_model.pkl', 'rb') as f:
             models['caa'] = pickle.load(f)
         with open('models/caa_explainer.pkl', 'rb') as f:
             explainers['caa'] = pickle.load(f)
         
-        # IVIG 모델 (⭐ 파일명 수정)
+        # IVIG 모델
         with open('models/ivig_model.pkl', 'rb') as f:
             models['ivig'] = pickle.load(f)
         with open('models/ivig_explainer.pkl', 'rb') as f:
             explainers['ivig'] = pickle.load(f)
-        
-        st.sidebar.success("✅ 모든 모델 로드 완료!")
             
+    except FileNotFoundError as e:
+        st.error(f"❌ 파일을 찾을 수 없습니다: {e}")
+        return None, None
     except Exception as e:
         st.error(f"❌ 모델 로딩 실패: {str(e)}")
         return None, None
@@ -38,7 +38,6 @@ def load_models():
 def main():
     st.sidebar.title("Navigation")
     
-    # 모델 로드
     models, explainers = load_models()
     
     if models is None or explainers is None:
@@ -69,7 +68,6 @@ def main():
     elif st.session_state.page == "ivig":
         st.sidebar.info("IVIG Resistance Prediction")
     
-    # 페이지 렌더링
     if st.session_state.page == "home":
         home.show()
     elif st.session_state.page == "caa":
